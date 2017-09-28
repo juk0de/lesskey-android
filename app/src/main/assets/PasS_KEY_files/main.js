@@ -203,7 +203,7 @@ function calculate() {
             }
 
             if (pw2 != "" &&  pw != pw2) {
-                resn.innerHTML = "passwords do not match";
+                resn.innerHTML = "secrets do not match!";
                 result_show();
             } else if (isNaN(iter) || iter < 1) {
                 resn.innerHTML = "sequence need to be > 0";
