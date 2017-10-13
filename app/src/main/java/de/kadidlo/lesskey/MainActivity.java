@@ -1,4 +1,4 @@
-package de.kadidlo.passkey;
+package de.kadidlo.lesskey;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,14 +10,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(de.kadidlo.lesskey.R.layout.activity_main);
 
         /** Enable JavaScript */
-        WebView webView = (WebView) findViewById(R.id.pk_view);
+        WebView webView = (WebView) findViewById(de.kadidlo.lesskey.R.id.pk_view);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        /** Load PasS/KEY */
-        webView.loadUrl("file:///android_asset/PasS_KEY.html");
+        /** Load LesS/KEY */
+        webView.loadUrl("file:///android_asset/LesS_KEY.html");
     }
 }

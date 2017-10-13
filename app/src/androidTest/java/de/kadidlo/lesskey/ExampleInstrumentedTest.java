@@ -1,4 +1,4 @@
-package de.kadidlo.passkey;
+package de.kadidlo.lesskey;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("de.kadidlo.passkey", appContext.getPackageName());
+        assertEquals("de.kadidlo.lesskey", appContext.getPackageName());
     }
 }

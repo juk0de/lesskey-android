@@ -1,4 +1,4 @@
-package de.kadidlo.passkey;
+package de.kadidlo.lesskey;
 
 import org.junit.Test;
 

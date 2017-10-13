@@ -4,11 +4,11 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "de.kadidlo.passkey"
+        applicationId "de.kadidlo.lesskey"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 5
-        versionName "1.2"
+        versionCode 6
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
