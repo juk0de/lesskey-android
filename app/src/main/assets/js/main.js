@@ -35,7 +35,7 @@ function a_to_hex(a) {
 	    s += (t.length == 1) ? ('0' + t) : t; // 1 octet = 2 hex digits
 	}
     }
-    //return s.substr(0, s.length-1); // drop the last space
+    //return s.; // drop the last space
     return s.trim();
 }
 
@@ -81,7 +81,7 @@ function a_to_dec(a) {
             if (i == 0 || j < 3) s += ' ';
 	}
     }
-    //return s.substr(0, s.length-1); // drop the last space
+    //return s.; // drop the last space
     return s.trim();
 }
 
@@ -140,6 +140,8 @@ function a_to_6word(h) {
 }
 
 var password_last_changed = new Date().getTime();
+var def_clear_timeout = 60000;
+var keep_clear_timeout = 1200000;
 var selected_id = '';
 var selected_border_style = "2px solid #337ab7";
 var copied_border_style = "2px solid #359335";
@@ -266,8 +268,8 @@ function secret_show() {
 }
 
 function secret_hide() {
-    document.getElementById('secret').type = "password";
-    document.getElementById('secret2').type = "password";
+    var secret = document.getElementById('secret').type = "password"
+    var secret2 = document.getElementById('secret2').type = "password"
 }
 
 function secret_toggle() {
@@ -275,7 +277,9 @@ function secret_toggle() {
     result_hide();
     if (sectype == "text") {
         secret_hide();
-    } else {
+    }
+    /* don't make secret visible if 'keep' is checked */
+    else if (document.getElementById('keep').checked == false) {
         secret_show();
     }
 }
@@ -299,19 +303,44 @@ function remove_selection() {
 }
 
 function clear_passwords_after_timeout() {
-    var t = new Date().getTime();
-    if ((t - password_last_changed) > 180000) {
-        document.getElementById('resn').innerHTML = "";
-        document.getElementById('resm').innerHTML = "";
-        document.getElementById('resx').innerHTML = "";
-        document.getElementById('resb').innerHTML = "";
-        document.getElementById('resd').innerHTML = "";
-        document.getElementById('resd').title = "";
-        document.getElementById('secret').value = "";
-        document.getElementById('secret2').value = "";
-        document.getElementById('prefix').value = "";
-        hide_all();
+    var clear_timeout = def_clear_timeout;
+    if (document.getElementById('keep').checked) {
+        clear_timeout = keep_clear_timeout;
     }
+    var t = new Date().getTime();
+    if (((clear_timeout - (t - password_last_changed)) <= 61000) && (document.getElementById('secret').value != "")) {
+        document.getElementById('keepstr').innerHTML = "&nbsp;(" + Math.max(0, Math.floor((clear_timeout - (t - password_last_changed)) / 1000)) + "s)";
+    }
+    else if (((clear_timeout - (t - password_last_changed)) <= keep_clear_timeout) && (document.getElementById('secret').value != "")) {
+        document.getElementById('keepstr').innerHTML = "&nbsp;(" + Math.max(0, Math.ceil((clear_timeout - (t - password_last_changed)) / 60000)) + "m)";
+    }
+    else {
+        document.getElementById('keepstr').innerHTML = "";
+    }
+    if ((t - password_last_changed) > clear_timeout) {
+        clear_passwords();  
+    }
+}
+
+function check_clear_passwords(cb) {
+    hide_all();
+    if (cb.checked == false) {
+        clear_passwords();
+    }
+}
+
+function clear_passwords() {
+    document.getElementById('resn').innerHTML = "";
+    document.getElementById('resm').innerHTML = "";
+    document.getElementById('resx').innerHTML = "";
+    document.getElementById('resb').innerHTML = "";
+    document.getElementById('resd').innerHTML = "";
+    document.getElementById('resd').title = "";
+    document.getElementById('secret').value = "";
+    document.getElementById('secret2').value = "";
+    document.getElementById('prefix').value = "";
+    document.getElementById('seed').value = "";
+    hide_all();
 }
 
 function reset_selected() {
@@ -384,5 +413,5 @@ function copy_content(id) {
     }
 }
  
-window.setInterval(clear_passwords_after_timeout, 10000);
+window.setInterval(clear_passwords_after_timeout, 1000);
 document.getElementById("seed").focus();
