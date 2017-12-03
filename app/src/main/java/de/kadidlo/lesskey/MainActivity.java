@@ -25,21 +25,36 @@ public class MainActivity extends AppCompatActivity {
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
-        /* Create new Client */
-        webView.setWebViewClient(new WebViewClient()
-        {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest)
-            {
-                if (webResourceRequest.getUrl().getScheme().equals("file")) {
-                    webView.loadUrl(webResourceRequest.getUrl().toString());
-                } else {
-                    /* If the URI is not pointing to a local file, open with an ACTION_VIEW Intent */
-                    webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, webResourceRequest.getUrl()));
+        /* Create new Client
+        *  -> we need to distinguish API versions, because of a change to "shouldOverrideUrlLoading"
+        */
+        if (android.os.Build.VERSION.SDK_INT >= 24) {
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, WebResourceRequest webResourceRequest) {
+                    if (webResourceRequest.getUrl().getScheme().equals("file")) {
+                        webView.loadUrl(webResourceRequest.getUrl().toString());
+                    } else {
+                        /* If the URI is not pointing to a local file, open with an ACTION_VIEW Intent */
+                        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, webResourceRequest.getUrl()));
+                    }
+                    return true; /* in both cases we handle the link manually */
                 }
-                return true; /* in both cases we handle the link manually */
-            }
-        });
+            });
+        } else {
+            webView.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+                    if (Uri.parse(url).getScheme().equals("file")) {
+                        webView.loadUrl(url);
+                    } else {
+                        /* If the URI is not pointing to a local file, open with an ACTION_VIEW Intent */
+                        webView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    }
+                    return true; /* in both cases we handle the link manually */
+                }
+            });
+        }
 
         /** Load LesS/KEY */
         webView.loadUrl("file:///android_asset/index.html");
