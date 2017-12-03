@@ -145,8 +145,15 @@ var keep_clear_timeout = 1200000;
 var selected_id = '';
 var selected_border_style = "2px solid #337ab7";
 var copied_border_style = "2px solid #359335";
+var copied_background = "#359335";
+var copied_borderColor = "#248224";
 
 function now_changed() {
+    restart_timer();
+    reset_generated();
+}
+
+function restart_timer() {
     password_last_changed = new Date().getTime();
 }
 
@@ -160,7 +167,7 @@ function switch_passwords() {
     pass.value = resn.innerHTML;
 }   
 
-function calculate() {
+function generate() {
     hide_all();
     now_changed();
     try {
@@ -226,6 +233,9 @@ function calculate() {
                 }
                 resd.title = a_to_dec6(p);
                 resd.innerHTML = a_to_dec(p);
+            	document.getElementById('calc').textContent = "GENERATED";
+            	document.getElementById('calc').style.background = copied_background;
+            	document.getElementById('calc').style.borderColor = copied_borderColor;
             }
         } catch (err) { resn.innerHTML = err.message; result_show();}
     } catch (err) { alert("ERROR: " + err.message); }
@@ -241,6 +251,10 @@ function result_show() {
     document.getElementById('resd').style.color = "#000";
     black_color = document.getElementById('resn').style.color;
     document.getElementById('show_hide').textContent = "hide";
+    /* restart the timer in order to give the user more time */
+    if (document.getElementById('keep').checked == false) {
+        restart_timer();
+    }
 }
 
 function result_hide() {
@@ -265,11 +279,17 @@ function result_toggle() {
 function secret_show() {
     document.getElementById('secret').type = "text";
     document.getElementById('secret2').type = "text";
+    document.getElementById('prefix').type = "text";
+    /* restart the timer in order to give the user more time */
+    if (document.getElementById('keep').checked == false) {
+    	restart_timer();
+    }
 }
 
 function secret_hide() {
     var secret = document.getElementById('secret').type = "password"
     var secret2 = document.getElementById('secret2').type = "password"
+    document.getElementById('prefix').type = "password"
 }
 
 function secret_toggle() {
@@ -341,6 +361,7 @@ function clear_passwords() {
     document.getElementById('prefix').value = "";
     document.getElementById('seed').value = "";
     hide_all();
+    reset_generated();
 }
 
 function reset_selected() {
@@ -353,6 +374,12 @@ function reset_selected() {
     document.getElementById('copy_btn').textContent = "copy selected";
     document.getElementById('copy_btn').style.background = '';
     document.getElementById('copy_btn').style.borderColor = '';
+}
+
+function reset_generated() {
+    document.getElementById('calc').textContent = "generate";
+    document.getElementById('calc').style.background = '';
+    document.getElementById('calc').style.borderColor = '';
 }
 
 function deselect_obj(o) {
@@ -405,9 +432,9 @@ function copy_content(id) {
     var e = document.getElementById(id);
     if (e.innerHTML != '') {
         if (copy_hidden(e.innerHTML) == true) {
-            document.getElementById('copy_btn').textContent = "! COPIED !";
-            document.getElementById('copy_btn').style.background = "#359335";
-            document.getElementById('copy_btn').style.borderColor = "#248224";
+            document.getElementById('copy_btn').textContent = "COPIED";
+            document.getElementById('copy_btn').style.background = copied_background;
+            document.getElementById('copy_btn').style.borderColor = copied_borderColor;
             e.style.border = copied_border_style;
         }
     }
