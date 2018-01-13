@@ -26,23 +26,36 @@
         width: 98%;
       }
       #button {
-          display:inline-block;
-          color:#444;
-          border:1px solid #CCC;
-          background:#DDD;
-          box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
-          cursor:pointer;
-          vertical-align:middle;
-          max-width: 100px;
-          padding: 5px;
-          text-align: center;
+        display:inline-block;
+        color:#444;
+        border:1px solid #CCC;
+        background:#DDD;
+        box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+        cursor:pointer;
+        vertical-align:middle;
+        max-width: 100px;
+        padding: 5px;
+        text-align: center;
       }
       #button:active {
-          color:red;
-          box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+        color:red;
+        box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+      }
+      @font-face {
+          font-family: 'password';
+          src: url('fonts/password.eot');
+          src: url('fonts/password.eot') format('embedded-opentype'),
+               url('fonts/password.woff2') format('woff2'),
+               url('fonts/password.woff') format('woff'),
+               url('fonts/password.ttf') format('truetype'),
+               url('fonts/password.svg#password') format('svg');
+      }
+      password-text {
+          font-family: "password";
       }
     </style>
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
   </head>
   <body>
     <form id="form"
@@ -63,7 +76,7 @@
                    type="text"/>
           </div>
           <div class="col-lg-1 col-md-1 col-sm-1 col-xs-3">
-            <a href="file:///android_asset/about_android.html" title="About Les/SKEY for Android">About</a>
+            <a class="" href="file:///android_asset/about_android.html" aria-label="About Les/SKEY for Android">About</a>
           </div>
         </div>
 
@@ -72,11 +85,13 @@
           <div class="col-lg-2 col-md-4 col-sm-5 col-xs-7">
             <input id="seed" name="seed" placeholder="key name" required="" class="form-control input-md" type="text"
                    autocomplete="off" autocapitalize="none" autocorrect="off"
+                   style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()"/>
           </div>
           <div class="col-lg-1 col-md-2 col-sm-3 col-xs-3">
             <input id="prefix" name="prefix" placeholder="prefix (optional)"
                    class="form-control input-md" type="password"
+                   style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()"/>
           </div>
         </div>
@@ -88,6 +103,7 @@
             <input id="secret" name="secret" placeholder="your password" required=""
                    class="form-control input-md" type="password" value=""
                    autocomplete="off" autocapitalize="none" autocorrect="off"
+                   style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()" onclick="deselect_obj(this)"/>
           </div>
         </div>
@@ -98,6 +114,7 @@
             <input id="secret2" name="secret2" placeholder="verify password (optional)" value=""
                    class="form-control input-md" type="password"
                    autocomplete="off" autocapitalize="none" autocorrect="off"
+                   style="font-family: 'monospace';"
                    onchange="now_changed()" oninput="now_changed()"/>
           </div>
           <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4 checkbox">
@@ -117,27 +134,27 @@
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resn" >key</label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resn" onclick="store_selected('resn')" ondblclick="copy_content('resn')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resn" onclick="store_selected('resn')" ondblclick="copy_content('resn')" class="form-control input-md" style="font-family: 'password'; white-space: nowrap; overflow: hidden;"></div></div>
         </div>
 
         <div class="form-group">
-          <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resm">&nbsp;</label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resm" onclick="store_selected('resm')" ondblclick="copy_content('resm')" class="form-control input-md" style="color: #fff;"></div></div>
+          <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resm" style="font-family: 'password'; color: #fff;">&nbsp;</label>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resm" onclick="store_selected('resm')" ondblclick="copy_content('resm')" class="form-control input-md" style="font-family: 'password'; white-space: nowrap; overflow: hidden;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resx"><em>hex</em></label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resx" onclick="store_selected('resx')" ondblclick="copy_content('resx')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resx" onclick="store_selected('resx')" ondblclick="copy_content('resx')" class="form-control input-md" style="font-family: 'password'; white-space: nowrap; overflow: hidden;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resb"><em>b64</em></label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resb" onclick="store_selected('resb')" ondblclick="copy_content('resb')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resb" onclick="store_selected('resb')" ondblclick="copy_content('resb')" class="form-control input-md" style="font-family: 'password'; white-space: nowrap; overflow: hidden;"></div></div>
         </div>
 
         <div class="form-group">
           <label class="col-lg-4 col-md-2 col-sm-2 col-xs-2 control-label" for="resd"><em>dec</em></label>
-          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resd" onclick="store_selected('resd')" ondblclick="copy_content('resd')" class="form-control input-md" style="color: #fff;"></div></div>
+          <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10"><div id="resd" onclick="store_selected('resd')" ondblclick="copy_content('resd')" class="form-control input-md" style="font-family: 'password'; white-space: nowrap; overflow: hidden;"></div></div>
         </div>
  
         <div class="form-group">

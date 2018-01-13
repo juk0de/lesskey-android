@@ -35,7 +35,6 @@ function a_to_hex(a) {
 	    s += (t.length == 1) ? ('0' + t) : t; // 1 octet = 2 hex digits
 	}
     }
-    //return s.; // drop the last space
     return s.trim();
 }
 
@@ -81,7 +80,6 @@ function a_to_dec(a) {
             if (i == 0 || j < 3) s += ' ';
 	}
     }
-    //return s.; // drop the last space
     return s.trim();
 }
 
@@ -148,6 +146,22 @@ var copied_border_style = "2px solid #359335";
 var copied_background = "#359335";
 var copied_borderColor = "#248224";
 
+var entityMap = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+  '=': '&#x3D;'
+};
+
+function escapeHtml (string) {
+  return String(string).replace(/[&<>"'=\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
+
 function now_changed() {
     restart_timer();
     reset_generated();
@@ -165,6 +179,9 @@ function switch_passwords() {
     var resn = document.getElementById('resn');
     pass2.value = "";
     pass.value = resn.innerHTML;
+    var seed = document.getElementById('seed');
+    seed.select();
+    seed.selectionStart = seed.selectionEnd;
 }   
 
 function generate() {
@@ -188,7 +205,7 @@ function generate() {
             var pass = document.getElementById('secret');
             var pass2 = document.getElementById('secret2');
             var seed = document.getElementById('seed').value;
-            var prefix = document.getElementById('prefix').value;
+            var prefix = escapeHtml(document.getElementById('prefix').value);
             var iter = parseInt(document.getElementById('seq').value);
             var pw = pass.value;
             var pw2 = pass2.value;
@@ -245,12 +262,12 @@ function generate() {
 
 var black_color = "#000";
 function result_show() {
-    document.getElementById('resn').style.color = "#000";
-    document.getElementById('resm').style.color = "#000";
-    document.getElementById('resx').style.color = "#000";
-    document.getElementById('resb').style.color = "#000";
-    document.getElementById('resd').style.color = "#000";
-    black_color = document.getElementById('resn').style.color;
+    document.getElementById('resn').style.fontFamily = "monospace";
+    document.getElementById('resm').style.fontFamily = "monospace";
+    document.getElementById('resx').style.fontFamily = "monospace";
+    document.getElementById('resb').style.fontFamily = "monospace";
+    document.getElementById('resd').style.fontFamily = "monospace";
+    black_color = document.getElementById('resn').style.fontFamily;
     document.getElementById('show_hide').textContent = "hide";
     /* restart the timer in order to give the user more time */
     if (document.getElementById('keep').checked == false) {
@@ -259,17 +276,16 @@ function result_show() {
 }
 
 function result_hide() {
-    document.getElementById('resn').style.color = "#fff";
-    document.getElementById('resm').style.color = "#fff";
-    document.getElementById('resx').style.color = "#fff";
-    document.getElementById('resb').style.color = "#fff";
-    document.getElementById('resd').style.color = "#fff";
+    document.getElementById('resn').style.fontFamily = "password";
+    document.getElementById('resm').style.fontFamily = "password";
+    document.getElementById('resx').style.fontFamily = "password";
+    document.getElementById('resb').style.fontFamily = "password";
+    document.getElementById('resd').style.fontFamily = "password";
     document.getElementById('show_hide').textContent = "show";
 }
 
 function result_toggle() {
-    var resncolor = document.getElementById('resn').style.color;
-    secret_hide();
+    var resncolor = document.getElementById('resn').style.fontFamily;
     if (resncolor == black_color) {
         result_hide();
     } else {
@@ -295,7 +311,6 @@ function secret_hide() {
 
 function secret_toggle() {
     var sectype = document.getElementById('secret').type;
-    result_hide();
     if (sectype == "text") {
         secret_hide();
     }
